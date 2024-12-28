@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Online de NSP e MODS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            margin: 10px;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .product-name {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .product-price {
+            font-size: 16px;
+            color: #888;
+            margin-top: 5px;
+        }
+        .product-info {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            z-index: 10;
+        }
+        .product-info h2 {
+            margin-top: 0;
+        }
+        .close-btn {
+            background-color: #ff4747;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .download-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Loja Online de NSP e MODS</h1>
+    </div>
+
+    <div class="product-container" id="product-container">
+        <!-- Produtos serão carregados aqui -->
+    </div>
+
+    <div id="product-info" class="product-info">
+        <h2 id="product-title">Título do Produto</h2>
+        <p id="product-description">Descrição do produto...</p>
+        <button class="download-btn" id="download-btn">Baixar</button>
+        <button class="close-btn" onclick="closeProductInfo()">Fechar</button>
+    </div>
+
+    <script>
+        // Função para carregar os produtos a partir de produtos.json
+        function carregarProdutos() {
+            fetch('produtos.json')
+                .then(response => response.json())
+                .then(data => {
+                    const produtos = data.produtos; // Assumindo que o JSON tem a chave "produtos"
+                    const container = document.getElementById('product-container');
+                    produtos.forEach(produto => {
+                        const produtoDiv = document.createElement('div');
+                        produtoDiv.classList.add('product');
+                        produtoDiv.onclick = () => openProductInfo(produto.nome, produto.descricao, produto.arquivo);
+
+                        produtoDiv.innerHTML = `
+                            <img src="${produto.imagem}" alt="${produto.nome}">
+                            <div class="product-name">${produto.nome}</div>
+                            <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+                        `;
+
+                        container.appendChild(produtoDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar o JSON:', error);
+                });
+        }
+
+        // Função para abrir a aba com as informações do produto
+        function openProductInfo(title, description, fileName) {
+            document.getElementById('product-title').innerText = title;
+            document.getElementById('product-description').innerText = description;
+            document.getElementById('download-btn').onclick = function() {
+                startDownload(fileName);
+            };
+            document.getElementById('product-info').style.display = 'block';
+        }
+
+        // Função para fechar a aba de informações
+        function closeProductInfo() {
+            document.getElementById('product-info').style.display = 'none';
+        }
+
+        // Função para iniciar o download
+        function startDownload(fileName) {
+            const link = document.createElement('a');
+            link.href = 'path/to/' + fileName; // Substitua 'path/to/' pelo caminho correto
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Chama a função para carregar os produtos quando a página for carregada
+        window.onload = carregarProdutos;
+    </script>
+
+</body>
+</html>
