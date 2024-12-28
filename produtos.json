@@ -2,10 +2,10 @@
   "produtos": [
     {
       "id": 1,
-      "nome": "Produto 1",
-      "descricao": "Descrição do Produto 1",
-      "preco": 29.99,
-      "imagem": "https://via.placeholder.com/200x150",
+      "nome": "Just Dance 2015",
+      "descricao": "Just Dance 2015 for wii only",
+      "preco": 00.00,
+      "imagem": "https://cdn.glitch.global/13cfbc95-7afa-4977-be60-ab25832f9497/c63357a1-19a9-4eae-a7d7-cea11a87ed77.image.png?v=1735429714965",
       "arquivo": "nsp1.zip"
     },
     {
